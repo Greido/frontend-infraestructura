@@ -25,7 +25,6 @@ export default function NavBar({ children }) {
       <Drawer open={open} anchor="left" onClose={() => setOpen(false)}>
         <NavListDrawer />
       </Drawer>
-      <HomePage />
       {children}
       <Outlet />
     </>

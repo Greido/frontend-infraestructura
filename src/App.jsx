@@ -7,12 +7,13 @@ import {
   Route,
   RouterProvider,
 } from "react-router-dom";
+import Login from "./container/Login";
 
 function App() {
   const router = createBrowserRouter(
     createRoutesFromElements(
       <>
-        <Route path="/" element={<NavBar />} />
+        <Route path="/" element={<Login />} />
         <Route path="/home" element={<HomePage />} />
         <Route />
       </>
