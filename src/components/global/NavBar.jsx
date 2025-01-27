@@ -2,7 +2,9 @@ import { AppBar, Drawer, IconButton, Toolbar } from "@mui/material";
 import { useState } from "react";
 import NavListDrawer from "./NavListDrawer";
 import MenuIcon from "@mui/icons-material/Menu";
-export default function NavBar() {
+import HomePage from "../../container/HomePage";
+import { Outlet } from "react-router-dom";
+export default function NavBar({ children }) {
   const [open, setOpen] = useState(false);
 
   return (
@@ -23,6 +25,9 @@ export default function NavBar() {
       <Drawer open={open} anchor="left" onClose={() => setOpen(false)}>
         <NavListDrawer />
       </Drawer>
+      <HomePage />
+      {children}
+      <Outlet />
     </>
   );
 }

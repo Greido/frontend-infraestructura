@@ -1,14 +1,27 @@
-import { Container } from "@mui/material";
 import "../src/index.css";
 import NavBar from "./components/global/NavBar";
 import HomePage from "./container/HomePage";
+import {
+  createBrowserRouter,
+  createRoutesFromElements,
+  Route,
+  RouterProvider,
+} from "react-router-dom";
 
 function App() {
+  const router = createBrowserRouter(
+    createRoutesFromElements(
+      <>
+        <Route path="/" element={<NavBar />} />
+        <Route path="/home" element={<HomePage />} />
+        <Route />
+      </>
+    )
+  );
+
   return (
     <>
-      <NavBar />
-      <Container sx={{ mt: 5 }}></Container>
-      <HomePage />
+      <RouterProvider router={router} />
     </>
   );
 }

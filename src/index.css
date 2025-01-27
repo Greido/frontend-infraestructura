@@ -2,3 +2,19 @@
   margin: 0;
   padding: 0;
 }
+/* .containerHP {
+  background: #8187f6;
+} */
+.printers {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  align-items: center;
+  align-content: center;
+}
+
+/* .con-hp {
+  background: #adaaaa;
+  height: 50vh;
+}
+ */
