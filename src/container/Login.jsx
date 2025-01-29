@@ -1,4 +1,4 @@
-import { useState, useContext } from "react";
+import { useState } from "react";
 import {
   Container,
   TextField,
@@ -11,9 +11,15 @@ import {
 import axios from "axios";
 import Swal from "sweetalert2";
 import { useNavigate } from "react-router-dom";
-import Cookies from "js-cookie";
+
+//Para implementar redux debo usar los dispatch y llamar al reducer que crea el setAuth
+
+import { useDispatch } from "react-redux";
+import { setAuth } from "../store/Slices/authSlice";
 
 const Registro = () => {
+  const dispatch = useDispatch();
+
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const navigate = useNavigate();
@@ -32,18 +38,12 @@ const Registro = () => {
         }
       );
 
-      const { token } = response.data;
-      console.log("Token recibido:", token);
+      const { token, usuario } = response.data;
 
       if (response.status === 201 || response.status === 200) {
-        // Guardar el token en las cookies
-        Cookies.set("token", token, { expires: 7 });
-
-        // Llamar al logger después de establecer la cookie
-        //  logger();  Esto asegura que el logger verifique el token después de ser guardado
-
-        // Redirigir al dashboard u otra página
-        navigate("/");
+        localStorage.setItem("token", token);
+        dispatch(setAuth(usuario));
+        navigate("/home");
       } else {
         Swal.fire("Error", "Fallo el registro", "error");
       }
@@ -56,7 +56,7 @@ const Registro = () => {
         });
       }
 
-      Swal.fire("Error", "Ha ocurrido un error, vuelva a intentarlo", "error");
+      Swal.fire("Error", "Ha ocurrido un error, vuelva a intentarlo", error);
       console.error("Error durante el registro:", error);
     }
   };

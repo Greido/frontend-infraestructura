@@ -16,9 +16,6 @@ function App() {
       <>
         <Route path="/" element={<AuthLayout />} />
         <Route index element={<Login />} />
-
-        <Route />
-
         <Route path="/admin" element={RutaProtegida}>
           <Route index element={<HomePage />} />
         </Route>
