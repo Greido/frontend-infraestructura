@@ -3,6 +3,7 @@ import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import "../index.css";
 import { IconButton, Paper, Typography } from "@mui/material";
+import { useNavigate } from "react-router-dom";
 /* Icons */
 import Inventory2OutlinedIcon from "@mui/icons-material/Inventory2Outlined";
 import LocalPrintshopIcon from "@mui/icons-material/LocalPrintshop";
@@ -12,6 +13,7 @@ import NavBar from "../components/global/NavBar";
 import DevicesIcon from "@mui/icons-material/Devices";
 import CategoryIcon from "@mui/icons-material/Category";
 function HomePage() {
+  const navigate = useNavigate();
   return (
     <>
       <NavBar />
@@ -30,7 +32,7 @@ function HomePage() {
                 flexDirection: "column",
               }}
             >
-              <IconButton>
+              <IconButton onClick={() => navigate("/admin/upinsumo")}>
                 <Inventory2OutlinedIcon
                   sx={{
                     justifyContent: "center",
