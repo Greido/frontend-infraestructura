@@ -9,6 +9,7 @@ import {
 import Login from "./container/Login";
 import AuthLayout from "./layout/authLayout";
 import RutaProtegida from "./layout/Rutaprotegida";
+import CargarStock from "./container/CargarStock";
 
 function App() {
   const router = createBrowserRouter(
@@ -21,6 +22,7 @@ function App() {
         {/* Ruta protegida */}
         <Route path="/admin" element={<RutaProtegida />}>
           <Route index element={<HomePage />} />
+          <Route path="upinsumo" element={<CargarStock />} />
         </Route>
       </>
     )

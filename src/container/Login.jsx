@@ -46,7 +46,7 @@ const Registro = () => {
 
     try {
       const { data } = await axios.post(
-        "http://localhost:4000/infra/login",
+        "https://stockback-nnq9.onrender.com/infra/login",
         login
       );
       if (data.token) {

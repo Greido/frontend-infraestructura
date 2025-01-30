@@ -1,5 +1,5 @@
 const CargarStock = () => {
-  return <></>;
+  return <>pepe loco</>;
 };
 
 export default CargarStock;
