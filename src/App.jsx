@@ -14,20 +14,19 @@ function App() {
   const router = createBrowserRouter(
     createRoutesFromElements(
       <>
-        <Route path="/" element={<AuthLayout />} />
-        <Route index element={<Login />} />
-        <Route path="/admin" element={RutaProtegida}>
+        <Route path="/" element={<AuthLayout />}>
+          <Route index element={<Login />} />
+        </Route>
+
+        {/* Ruta protegida */}
+        <Route path="/admin" element={<RutaProtegida />}>
           <Route index element={<HomePage />} />
         </Route>
       </>
     )
   );
 
-  return (
-    <>
-      <RouterProvider router={router} />
-    </>
-  );
+  return <RouterProvider router={router} />;
 }
 
 export default App;

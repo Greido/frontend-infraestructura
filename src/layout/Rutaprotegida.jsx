@@ -8,10 +8,13 @@ function RutaProtegida() {
   const { auth } = useSelector((state) => state.auth);
 
   useEffect(() => {
-    dispatch(autenticarUsuario());
-  }, [dispatch]);
+    if (!auth.token) {
+      console.log("No hay token, autenticando usuario...");
+      dispatch(autenticarUsuario());
+    }
+  }, [dispatch, auth.token]);
 
-  return <>{auth?._id ? <Outlet /> : <Navigate to="/" />}</>;
+  return <>{auth?.token ? <Outlet /> : <Navigate to="/" />}</>;
 }
 
 export default RutaProtegida;

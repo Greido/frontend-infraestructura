@@ -3,7 +3,11 @@ import axios from "axios";
 
 // Estado inicial
 const initialState = {
-  auth: {},
+  auth: {
+    token: localStorage.getItem("token") || null,
+    username: null,
+    email: null,
+  },
   cargando: true,
 };
 
@@ -46,6 +50,8 @@ const authSlice = createSlice({
       state.auth = action.payload;
     },
   },
+
+  /* --------------------------------------------------------- */
   extraReducers: (builder) => {
     builder
       .addCase(autenticarUsuario.pending, (state) => {

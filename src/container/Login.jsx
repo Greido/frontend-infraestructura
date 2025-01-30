@@ -9,117 +9,129 @@ import {
   Paper,
 } from "@mui/material";
 import axios from "axios";
-import Swal from "sweetalert2";
 import { useNavigate } from "react-router-dom";
-
-//Para implementar redux debo usar los dispatch y llamar al reducer que crea el setAuth
-
 import { useDispatch } from "react-redux";
 import { setAuth } from "../store/Slices/authSlice";
 
 const Registro = () => {
+  const [login, setLogin] = useState({
+    username: "",
+    password: "",
+  });
+  const [alerta, setAlerta] = useState({});
+
+  const navigate = useNavigate();
   const dispatch = useDispatch();
 
-  const [username, setUsername] = useState("");
-  const [password, setPassword] = useState("");
-  const navigate = useNavigate();
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setLogin({
+      ...login,
+      [name]: value,
+    });
+  };
 
-  const register = async (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
-    const options = { password, username };
+    const { username, password } = login;
+
+    if ([username, password].includes("")) {
+      setAlerta({
+        msg: "Todos los campos son obligatorios",
+        error: true,
+      });
+      return;
+    }
 
     try {
-      const response = await axios.post(
+      const { data } = await axios.post(
         "http://localhost:4000/infra/login",
-        options,
-        {
-          withCredentials: true,
-        }
+        login
       );
-
-      const { token, usuario } = response.data;
-
-      if (response.status === 201 || response.status === 200) {
-        localStorage.setItem("token", token);
-        dispatch(setAuth(usuario));
-        navigate("/home");
+      if (data.token) {
+        localStorage.setItem("token", data.token);
+        dispatch(setAuth(data));
+        navigate("/admin");
       } else {
-        Swal.fire("Error", "Fallo el registro", "error");
-      }
-    } catch (error) {
-      if (error.code === "ERR_NETWORK") {
-        Swal.fire({
-          icon: "error",
-          title: "Upa!!!",
-          text: "El backend esta apagado",
+        setAlerta({
+          msg: "Error en la autenticación",
+          error: true,
         });
       }
-
-      Swal.fire("Error", "Ha ocurrido un error, vuelva a intentarlo", error);
-      console.error("Error durante el registro:", error);
+    } catch (error) {
+      setAlerta({
+        msg:
+          error.response?.data?.msg ||
+          "Ocurrió un error al intentar iniciar sesión.",
+        error: true,
+      });
     }
+
+    setLogin({ username: "", password: "" });
   };
 
   return (
-    <>
-      <Container>
-        <Paper sx={{ padding: 10, marginTop: 10 }}>
-          <Box
-            sx={{
-              marginTop: 8,
-              display: "flex",
-              flexDirection: "column",
-              alignItems: "center",
-            }}
-          >
-            <Typography component="h1" variant="h5">
-              Iniciar sesión
-            </Typography>
-            <Box component="form" noValidate sx={{ mt: 3 }} onSubmit={register}>
-              <Grid container spacing={2}>
-                <Grid item xs={12}>
-                  <TextField
-                    required
-                    fullWidth
-                    id="username"
-                    label="Nombre de usuario"
-                    name="username"
-                    autoComplete="name"
-                    value={username}
-                    onChange={(e) => setUsername(e.target.value)}
-                  />
-                </Grid>
+    <Container>
+      <Paper sx={{ padding: 10, marginTop: 10 }}>
+        <Box
+          sx={{
+            marginTop: 8,
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+          }}
+        >
+          <Typography component="h1" variant="h5">
+            Iniciar sesión
+          </Typography>
 
-                <Grid item xs={12}>
-                  <TextField
-                    required
-                    fullWidth
-                    label="Password"
-                    name="password"
-                    type="password"
-                    id="password"
-                    autoComplete="new-password"
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)}
-                  />
-                </Grid>
+          <Box
+            component="form"
+            noValidate
+            sx={{ mt: 3 }}
+            onSubmit={handleSubmit}
+          >
+            <Grid container spacing={2}>
+              <Grid item xs={12}>
+                <TextField
+                  required
+                  fullWidth
+                  id="username"
+                  label="Nombre de usuario"
+                  name="username"
+                  autoComplete="name"
+                  value={login.username}
+                  onChange={handleChange}
+                />
               </Grid>
-              <Button variant="contained" sx={{ marginTop: 5 }} type="submit">
-                Ingresar
-              </Button>
-            </Box>
-            <Button
-              variant="contained"
-              sx={{ marginTop: 5 }}
-              onClick={() => navigate("/register")}
-            >
-              Registrarme
+
+              <Grid item xs={12}>
+                <TextField
+                  required
+                  fullWidth
+                  label="Password"
+                  name="password"
+                  type="password"
+                  id="password"
+                  autoComplete="new-password"
+                  value={login.password}
+                  onChange={handleChange}
+                />
+              </Grid>
+            </Grid>
+
+            <Button variant="contained" sx={{ marginTop: 5 }} type="submit">
+              Ingresar
             </Button>
           </Box>
-        </Paper>
-      </Container>
-    </>
+
+          <Button variant="contained" sx={{ marginTop: 5 }}>
+            Registrarme
+          </Button>
+        </Box>
+      </Paper>
+    </Container>
   );
 };
 
