@@ -13,7 +13,7 @@ import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import Swal from "sweetalert2";
 const CargarStock = () => {
   const [proveedores, setProveedores] = useState([]);
-
+  const [fechaIngreso, setFechaIngreso] = useState(null);
   useEffect(() => {
     console.log("Proveedores:", proveedores);
   }, [proveedores]);
@@ -22,7 +22,7 @@ const CargarStock = () => {
     const fetchProveedores = async () => {
       try {
         const response = await axios.get(
-          "https://stockback-nnq9.onrender.com/proveedor/getallproviders"
+          "http://localhost:4000/proveedor/getallproviders"
         );
         setProveedores(response.data);
         console.log("Proveedores:", response.data);
@@ -42,14 +42,23 @@ const CargarStock = () => {
       proveedor: "",
       tipoDeTinta: "",
       impresora: "",
-      fecha_ingreso: new Date().toISOString().split("T")[0],
+      fecha_ingreso: "",
     },
     onSubmit: async (values) => {
-      console.log(values);
+      console.log("Valores enviados:", values); // Verifica en la consola
+
+      if (!values.fecha_ingreso) {
+        Swal.fire({
+          title: "Error",
+          text: "Debes seleccionar una fecha de ingreso.",
+          icon: "error",
+        });
+        return;
+      }
 
       try {
         const response = await axios.post(
-          "https://stockback-nnq9.onrender.com/insumo/crearInsumo",
+          "http://localhost:4000/insumo/crearInsumo",
           values
         );
 
@@ -145,7 +154,7 @@ const CargarStock = () => {
                   <br />
                   <br />
                   <Select
-                    labelId="tipoDeTinta-label"
+                    labelId="tipoDeTinta"
                     id="tipoDeTinta"
                     name="tipoDeTinta"
                     value={formik.values.tipoDeTinta}
@@ -182,8 +191,18 @@ const CargarStock = () => {
                   <br />
                   <br />
                   {/* Date picker y calendario */}
-                  <label>Ingrese la fecha, MES,DIA, Anio</label> <br />
-                  <DatePicker />
+                  <DatePicker
+                    label="Fecha de Ingreso"
+                    value={fechaIngreso}
+                    onChange={(newValue) => {
+                      if (newValue) {
+                        const formattedDate = newValue.format("YYYY-MM-DD"); // Formato válido para el backend
+                        setFechaIngreso(newValue);
+                        formik.setFieldValue("fecha_ingreso", formattedDate);
+                      }
+                    }}
+                    renderInput={(params) => <TextField {...params} />}
+                  />
                   <br />
                   <br />
                   <Button variant="contained" color="primary" type="submit">
