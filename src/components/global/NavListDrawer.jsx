@@ -21,7 +21,7 @@ export default function NavListDrawer() {
           <ListItemText primary="Inicio" />
         </ListItemButton>
 
-        <ListItemButton onClick={() => navigate("/admin/upinsumo")}>
+        <ListItemButton onClick={() => navigate("/admin/verinsumos")}>
           <ListItemIcon>
             <Inventory2OutlinedIcon />
           </ListItemIcon>

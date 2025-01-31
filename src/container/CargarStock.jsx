@@ -14,15 +14,13 @@ import Swal from "sweetalert2";
 const CargarStock = () => {
   const [proveedores, setProveedores] = useState([]);
   const [fechaIngreso, setFechaIngreso] = useState(null);
-  useEffect(() => {
-    console.log("Proveedores:", proveedores);
-  }, [proveedores]);
+
   /* Select dinamico */
   useEffect(() => {
     const fetchProveedores = async () => {
       try {
         const response = await axios.get(
-          "http://localhost:4000/proveedor/getallproviders"
+          "https://stockback-nnq9.onrender.com/proveedor/getallproviders"
         );
         setProveedores(response.data);
         console.log("Proveedores:", response.data);
@@ -37,11 +35,12 @@ const CargarStock = () => {
 
   const formik = useFormik({
     initialValues: {
-      nombre: "",
+      marca: "",
+      modelo: "",
       cantidad: 0,
       proveedor: "",
+      colorDeTinta: "",
       tipoDeTinta: "",
-      impresora: "",
       fecha_ingreso: "",
     },
     onSubmit: async (values) => {
@@ -58,7 +57,7 @@ const CargarStock = () => {
 
       try {
         const response = await axios.post(
-          "http://localhost:4000/insumo/crearInsumo",
+          "https://stockback-nnq9.onrender.com/insumo/crearInsumo",
           values
         );
 
@@ -115,12 +114,22 @@ const CargarStock = () => {
               <LocalizationProvider dateAdapter={AdapterDayjs}>
                 <form onSubmit={formik.handleSubmit}>
                   <TextField
-                    id="nombre"
-                    label="Nombre"
-                    name="nombre"
+                    id="marca"
+                    label="Marca"
+                    name="marca"
                     type="text"
                     onChange={formik.handleChange}
-                    value={formik.values.nombre}
+                    value={formik.values.marca}
+                  />
+                  <br />
+                  <br />
+                  <TextField
+                    id="modelo"
+                    label="Modelo"
+                    name="modelo"
+                    type="text"
+                    onChange={formik.handleChange}
+                    value={formik.values.modelo}
                   />
                   <br />
                   <br />
@@ -154,10 +163,10 @@ const CargarStock = () => {
                   <br />
                   <br />
                   <Select
-                    labelId="tipoDeTinta"
-                    id="tipoDeTinta"
-                    name="tipoDeTinta"
-                    value={formik.values.tipoDeTinta}
+                    labelId="color de tinta"
+                    id="colorDeTinta"
+                    name="colorDeTinta"
+                    value={formik.values.colorDeTinta}
                     onChange={formik.handleChange}
                     displayEmpty
                   >
@@ -175,18 +184,18 @@ const CargarStock = () => {
                   <br />
                   <Select
                     labelId="impresora-label"
-                    id="impresora"
-                    name="impresora"
-                    value={formik.values.impresora}
+                    id="tipoDeTinta"
+                    name="tipoDeTinta"
+                    value={formik.values.tipoDeTinta}
                     onChange={formik.handleChange}
                     displayEmpty
                   >
                     <MenuItem value="" disabled>
                       Tipo de tinta
                     </MenuItem>
-                    <MenuItem value="tinta">Tinta</MenuItem>
-                    <MenuItem value="toner">Toner</MenuItem>
-                    <MenuItem value="cartucho">Cartucho</MenuItem>
+                    <MenuItem value="Tinta">Tinta</MenuItem>
+                    <MenuItem value="Toner">Toner</MenuItem>
+                    <MenuItem value="Cartucho">Cartucho</MenuItem>
                   </Select>
                   <br />
                   <br />
