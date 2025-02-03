@@ -14,7 +14,7 @@ export default function NavListDrawer() {
       }}
     >
       <nav>
-        <ListItemButton>
+        <ListItemButton onClick={() => navigate("/admin")}>
           <ListItemIcon>
             <HomeIcon />
           </ListItemIcon>

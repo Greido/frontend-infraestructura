@@ -73,7 +73,7 @@ const Registro = () => {
 
   return (
     <Container>
-      <Paper sx={{ padding: 10, marginTop: 10 }}>
+      <Paper elevation={10} sx={{ padding: 10, marginTop: 10 }}>
         <Box
           sx={{
             marginTop: 8,
