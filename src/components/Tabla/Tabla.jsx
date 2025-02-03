@@ -1,7 +1,9 @@
 import axios from "axios";
+import { Button } from "@mui/material";
 import { useEffect, useState } from "react";
 import DataTable from "react-data-table-component";
-
+import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
+import EditIcon from "@mui/icons-material/Edit";
 const Tabla = () => {
   const [insumos, setInsumos] = useState([]);
 
@@ -79,7 +81,55 @@ const Tabla = () => {
       selector: (row) => new Date(row.fecha_ingreso).toLocaleDateString(),
       grow: 1,
     },
+    {
+      name: "Acciones",
+      cell: (row) => (
+        <div style={{ display: "flex", gap: "8px" }}>
+          <Button
+            variant="contained"
+            color="primary"
+            //size="small"
+            //onClick={() => handleEdit(row)}
+          >
+            <EditIcon />
+          </Button>
+          <Button
+            variant="contained"
+            color="error"
+            //size="small"
+            onClick={() => handleDelete(row._id)}
+          >
+            <DeleteForeverIcon />
+          </Button>
+        </div>
+      ),
+      ignoreRowClick: true,
+      allowOverflow: true,
+      button: true,
+    },
   ];
+
+  //Borrar insumo
+  const handleDelete = async (_id) => {
+    const confirmar = window.confirm(
+      "¿Confirma que desea eliminar esta impresora?"
+    );
+    if (confirmar) {
+      try {
+        // Realizar la solicitud DELETE
+        await axios.delete(`http://localhost:4000/insumo/${_id}`);
+
+        // Actualizar la lista de impresoras sin la impresora eliminada
+        const impresoraActualizada = insumos.filter(
+          (impresora) => impresora._id !== _id
+        );
+
+        setInsumos(impresoraActualizada);
+      } catch (error) {
+        console.log("Error al eliminar la impresora", error);
+      }
+    }
+  };
 
   return (
     <div className="p-4 bg-gray-100 min-h-screen">
@@ -92,7 +142,7 @@ const Tabla = () => {
           data={insumos}
           striped
           pagination
-          responsive // Habilita la respuesta automática
+          responsive
         />
       </div>
     </div>
