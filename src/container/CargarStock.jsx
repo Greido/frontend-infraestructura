@@ -25,7 +25,7 @@ const CargarStock = () => {
     const fetchProveedores = async () => {
       try {
         const response = await axios.get(
-          "https://stockback-nnq9.onrender.com/proveedor/getallproviders"
+          "http://localhost:4000/proveedor/getallproviders"
         );
         setProveedores(response.data);
       } catch (error) {
