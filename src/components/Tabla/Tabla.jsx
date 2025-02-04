@@ -117,7 +117,7 @@ const Tabla = () => {
     if (confirmar) {
       try {
         // Realizar la solicitud DELETE
-        await axios.delete(`http://localhost:4000/insumo/${_id}`);
+        await axios.delete(`https://stockback-nnq9.onrender.com/insumo/${_id}`);
 
         // Actualizar la lista de impresoras sin la impresora eliminada
         const impresoraActualizada = insumos.filter(
