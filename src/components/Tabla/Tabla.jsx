@@ -4,8 +4,19 @@ import { useEffect, useState } from "react";
 import DataTable from "react-data-table-component";
 import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
 import EditIcon from "@mui/icons-material/Edit";
+import useInsumoModal from "../../hooks/useInsumoModal";
+import Modal from "../modal/Modal";
 const Tabla = () => {
   const [insumos, setInsumos] = useState([]);
+
+  const {
+    openEditModal,
+    selectedProduct,
+    selectedId,
+    handleOpenEditModal,
+    handleCloseEditModal,
+    handleUpdate,
+  } = useInsumoModal();
 
   useEffect(() => {
     const fetchInsumos = async () => {
@@ -88,15 +99,15 @@ const Tabla = () => {
           <Button
             variant="contained"
             color="primary"
-            //size="small"
-            //onClick={() => handleEdit(row)}
+            size="small"
+            onClick={() => handleOpenEditModal(row)}
           >
             <EditIcon />
           </Button>
           <Button
             variant="contained"
             color="error"
-            //size="small"
+            size="small"
             onClick={() => handleDelete(row._id)}
           >
             <DeleteForeverIcon />
@@ -145,6 +156,13 @@ const Tabla = () => {
           responsive
         />
       </div>
+
+      <Modal
+        open={openEditModal}
+        selectedProduct={selectedProduct}
+        handleClose={handleCloseEditModal}
+        handleUpdate={handleUpdate}
+      />
     </div>
   );
 };
