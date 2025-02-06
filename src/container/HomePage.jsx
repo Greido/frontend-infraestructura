@@ -67,7 +67,7 @@ function HomePage() {
                 flexDirection: "column",
               }}
             >
-              <IconButton>
+              <IconButton onClick={() => navigate("/admin/upimpresora")}>
                 <LocalPrintshopIcon
                   sx={{
                     justifyContent: "center",

@@ -11,6 +11,7 @@ import AuthLayout from "./layout/authLayout";
 import RutaProtegida from "./layout/Rutaprotegida";
 import CargarStock from "./container/CargarStock";
 import InsumosTabla from "./container/insumos/InsumosTabla";
+import CargarImpresoras from "./container/impresoras/CargarImpresoras";
 
 function App() {
   const router = createBrowserRouter(
@@ -23,8 +24,11 @@ function App() {
         {/* Ruta protegida */}
         <Route path="/admin" element={<RutaProtegida />}>
           <Route index element={<HomePage />} />
+          {/* Rutas de stock */}
           <Route path="upinsumo" element={<CargarStock />} />
           <Route path="verinsumos" element={<InsumosTabla />} />
+          {/* Ruta de impresoras */}
+          <Route path="upimpresora" element={<CargarImpresoras />} />
         </Route>
       </>
     )
