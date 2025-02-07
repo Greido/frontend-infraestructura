@@ -1,18 +1,19 @@
 import axios from "axios";
-import { Button } from "@mui/material";
+import { Button, TextField } from "@mui/material";
 import { useEffect, useState } from "react";
 import DataTable from "react-data-table-component";
 import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
 import EditIcon from "@mui/icons-material/Edit";
 import useInsumoModal from "../../hooks/useInsumoModal";
 import Modal from "../modal/Modal";
+
 const Tabla = () => {
   const [insumos, setInsumos] = useState([]);
+  const [searchText, setSearchText] = useState(""); // Estado para la búsqueda
 
   const {
     openEditModal,
     selectedProduct,
-    selectedId,
     handleOpenEditModal,
     handleCloseEditModal,
     handleUpdate,
@@ -25,13 +26,19 @@ const Tabla = () => {
           "https://stockback-nnq9.onrender.com/insumo/allinsumos"
         );
         setInsumos(response.data);
-        console.log("Insumos", response.data);
       } catch (error) {
         console.log("Error insumistico", error);
       }
     };
     fetchInsumos();
   }, []);
+
+  // Filtrar insumos en función del texto de búsqueda
+  const filteredInsumos = insumos.filter((insumo) =>
+    Object.values(insumo).some((value) =>
+      value?.toString().toLowerCase().includes(searchText.toLowerCase())
+    )
+  );
 
   const customStyles = {
     header: {
@@ -43,8 +50,8 @@ const Tabla = () => {
     },
     table: {
       style: {
-        width: "100%", // La tabla ocupa todo el ancho disponible
-        minWidth: "600px", // Mínimo ancho para evitar que se compacte demasiado
+        width: "100%",
+        minWidth: "600px",
         borderRadius: "8px",
         boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)",
       },
@@ -120,37 +127,42 @@ const Tabla = () => {
     },
   ];
 
-  //Borrar insumo
+  // Borrar insumo
   const handleDelete = async (_id) => {
     const confirmar = window.confirm(
-      "¿Confirma que desea eliminar esta impresora?"
+      "¿Confirma que desea eliminar este insumo?"
     );
     if (confirmar) {
       try {
-        // Realizar la solicitud DELETE
         await axios.delete(`https://stockback-nnq9.onrender.com/insumo/${_id}`);
-
-        // Actualizar la lista de impresoras sin la impresora eliminada
-        const impresoraActualizada = insumos.filter(
-          (impresora) => impresora._id !== _id
+        const insumosActualizados = insumos.filter(
+          (insumo) => insumo._id !== _id
         );
-
-        setInsumos(impresoraActualizada);
+        setInsumos(insumosActualizados);
       } catch (error) {
-        console.log("Error al eliminar la impresora", error);
+        console.log("Error al eliminar el insumo", error);
       }
     }
   };
 
   return (
     <div className="p-4 bg-gray-100 min-h-screen">
+      {/* Barra de búsqueda */}
+      <TextField
+        label="Buscar insumo"
+        variant="outlined"
+        fullWidth
+        margin="normal"
+        value={searchText}
+        onChange={(e) => setSearchText(e.target.value)}
+      />
+
       <div className="overflow-x-auto shadow-md rounded-lg">
         <DataTable
-          className="Tabla"
           customStyles={customStyles}
           columns={columns}
           highlightOnHover
-          data={insumos}
+          data={filteredInsumos} // Usamos los datos filtrados
           striped
           pagination
           responsive

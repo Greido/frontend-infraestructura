@@ -30,7 +30,7 @@ const CargarImpresoras = () => {
     onSubmit: async (values) => {
       try {
         const response = await axios.post(
-          "http://localhost:4000/impresoras/crearImpresora",
+          "https://stockback-nnq9.onrender.com/impresoras/crearImpresora",
           values
         );
         if (response.status === 201 || response.status === 200) {
