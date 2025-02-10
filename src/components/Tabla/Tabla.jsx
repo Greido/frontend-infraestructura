@@ -1,13 +1,15 @@
 import axios from "axios";
 import { Button, TextField } from "@mui/material";
-import { useEffect, useState } from "react";
+import React, { useState, useEffect } from "react";
 import DataTable from "react-data-table-component";
 import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
 import EditIcon from "@mui/icons-material/Edit";
 import useInsumoModal from "../../hooks/useInsumoModal";
 import Modal from "../modal/Modal";
+import { ClipLoader } from "react-spinners";
 
 const Tabla = () => {
+  const [loading, setLoading] = useState(true);
   const [insumos, setInsumos] = useState([]);
   const [searchText, setSearchText] = useState(""); // Estado para la búsqueda
 
@@ -28,6 +30,8 @@ const Tabla = () => {
         setInsumos(response.data);
       } catch (error) {
         console.log("Error insumistico", error);
+      } finally {
+        setLoading(false);
       }
     };
     fetchInsumos();
@@ -157,17 +161,21 @@ const Tabla = () => {
         onChange={(e) => setSearchText(e.target.value)}
       />
 
-      <div className="overflow-x-auto shadow-md rounded-lg">
-        <DataTable
-          customStyles={customStyles}
-          columns={columns}
-          highlightOnHover
-          data={filteredInsumos} // Usamos los datos filtrados
-          striped
-          pagination
-          responsive
-        />
-      </div>
+      {loading ? (
+        <ClipLoader size={30} />
+      ) : (
+        <div className="overflow-x-auto shadow-md rounded-lg">
+          <DataTable
+            customStyles={customStyles}
+            columns={columns}
+            highlightOnHover
+            data={filteredInsumos} // Usamos los datos filtrados
+            striped
+            pagination
+            responsive
+          />
+        </div>
+      )}
 
       <Modal
         open={openEditModal}
