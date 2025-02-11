@@ -47,7 +47,7 @@ const CargarStock = () => {
       tipoDeTinta: "",
       fecha_ingreso: "",
     },
-    onSubmit: async (values) => {
+    onSubmit: async (values, { resetForm }) => {
       if (!values.fecha_ingreso) {
         Swal.fire({
           title: "Error",
@@ -68,6 +68,9 @@ const CargarStock = () => {
             title: "¡Cargado!",
             text: "El insumo ha sido registrado correctamente.",
             icon: "success",
+          }).then(() => {
+            resetForm(); // Reiniciar el formulario
+            setFechaIngreso(null); // Reiniciar la fecha de ingreso
           });
         }
       } catch (error) {
