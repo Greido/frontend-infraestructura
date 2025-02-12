@@ -15,7 +15,7 @@ import { ClipLoader } from "react-spinners";
 import DataTable from "react-data-table-component";
 import { useNavigate } from "react-router-dom";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
-
+import Modal from "../modalprinters/Modal";
 const viewImpresora = () => {
   const [loading, setLoading] = useState(true);
   const [impresoras, setImpresoras] = useState([]);
@@ -40,7 +40,6 @@ const viewImpresora = () => {
           "https://stockback-nnq9.onrender.com/impresoras/verImpresoras"
         );
         setImpresoras(response.data);
-        console.log("impresoras", impresoras);
       } catch (error) {
         console.log("Error de impresoras", error);
       }
@@ -82,14 +81,8 @@ const viewImpresora = () => {
       sortable: true,
       grow: 0.5,
     },
-    { name: "Proveedor", selector: (row) => row.proveedor, grow: 1 },
-    { name: "Tipo de tinta", selector: (row) => row.tipoDeTinta, grow: 1 },
-    { name: "Color", selector: (row) => row.colorDeTinta, grow: 0.7 },
-    {
-      name: "Fecha de ingreso",
-      selector: (row) => new Date(row.fecha_ingreso).toLocaleDateString(),
-      grow: 1,
-    },
+    { name: "Tipo", selector: (row) => row.insumo, grow: 1 },
+    { name: "Area", selector: (row) => row.area, grow: 0.7 },
     {
       name: "Acciones",
       cell: (row) => (
@@ -158,16 +151,16 @@ const viewImpresora = () => {
             responsive
           />
         </div>
-        {/*         <Modal
+        <Modal
           open={openEditModal}
           selectedProduct={selectedProduct}
           handleClose={handleCloseEditModal}
           handleUpdate={handleUpdate}
-        /> */}
+        />
 
         {/* Diálogo de confirmación para eliminar */}
         <Dialog open={Boolean(deleteId)} onClose={() => setDeleteId(null)}>
-          <DialogTitle>¿Seguro que deseas eliminar este insumo?</DialogTitle>
+          <DialogTitle>¿Seguro que deseas eliminar esta impresora?</DialogTitle>
           <DialogActions>
             <Button onClick={() => setDeleteId(null)} color="primary">
               Cancelar

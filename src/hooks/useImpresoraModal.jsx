@@ -14,7 +14,6 @@ const useImpresoraModal = () => {
           "https://stockback-nnq9.onrender.com/impresoras/verImpresoras"
         );
         setInsumos(response.data);
-        console.log("Insumos", response.data);
       } catch (error) {
         console.log("Error insumistico", error);
       }

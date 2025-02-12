@@ -12,7 +12,7 @@ import RutaProtegida from "./layout/Rutaprotegida";
 import CargarStock from "./container/CargarStock";
 import InsumosTabla from "./container/insumos/InsumosTabla";
 import CargarImpresoras from "./container/impresoras/CargarImpresoras";
-
+import ViewImpresora from "./components/verImpresoras/ViewImpresora";
 function App() {
   const router = createBrowserRouter(
     createRoutesFromElements(
@@ -29,6 +29,7 @@ function App() {
           <Route path="verinsumos" element={<InsumosTabla />} />
           {/* Ruta de impresoras */}
           <Route path="upimpresora" element={<CargarImpresoras />} />
+          <Route path="verimpresoras" element={<ViewImpresora />} />
         </Route>
       </>
     )

@@ -28,7 +28,7 @@ export default function NavListDrawer() {
           <ListItemText primary="Ver insumos" />
         </ListItemButton>
 
-        <ListItemButton>
+        <ListItemButton onClick={() => navigate("/admin/verimpresoras")}>
           <ListItemIcon>
             <LocalPrintshopIcon />
           </ListItemIcon>
