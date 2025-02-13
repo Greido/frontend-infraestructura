@@ -27,7 +27,7 @@ const CargarImpresoras = () => {
       area: "",
     },
 
-    onSubmit: async (values) => {
+    onSubmit: async (values, { resetForm }) => {
       try {
         const response = await axios.post(
           "https://stockback-nnq9.onrender.com/impresoras/crearImpresora",
@@ -39,6 +39,7 @@ const CargarImpresoras = () => {
             text: "Impresora creada correctamente",
             icon: "success",
           });
+          resetForm();
         }
       } catch (error) {
         Swal.fire({

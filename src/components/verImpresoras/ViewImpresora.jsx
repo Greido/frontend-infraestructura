@@ -55,6 +55,28 @@ const viewImpresora = () => {
     );
   }, [impresoras, searchText]);
 
+  const handleDelete = async (_id) => {
+    if (!_id) return; // Asegura que hay un ID antes de intentar eliminar
+
+    const confirmar = window.confirm(
+      "¿Confirma que desea eliminar esta impresora?"
+    );
+    if (confirmar) {
+      try {
+        await axios.delete(
+          `https://stockback-nnq9.onrender.com/impresoras/${_id}`
+        );
+        const impresorasActualizadas = impresoras.filter(
+          (impresora) => impresora._id !== _id
+        );
+        setImpresoras(impresorasActualizadas);
+        setDeleteId(null); // Cerrar el diálogo después de eliminar
+      } catch (error) {
+        console.log("Error al eliminar la impresora", error);
+      }
+    }
+  };
+
   const customStyles = {
     headCells: {
       style: {
@@ -165,7 +187,9 @@ const viewImpresora = () => {
             <Button onClick={() => setDeleteId(null)} color="primary">
               Cancelar
             </Button>
-            <Button color="error">Eliminar</Button>
+            <Button onClick={handleDelete(deleteId)} color="error">
+              Eliminar
+            </Button>
           </DialogActions>
         </Dialog>
       </div>

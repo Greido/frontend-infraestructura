@@ -27,6 +27,7 @@ const Tabla = () => {
         const response = await axios.get(
           "https://stockback-nnq9.onrender.com/insumo/allinsumos"
         );
+
         setInsumos(response.data);
       } catch (error) {
         console.log("Error insumistico", error);
@@ -39,8 +40,15 @@ const Tabla = () => {
 
   // Filtrar insumos en función del texto de búsqueda
   const filteredInsumos = insumos.filter((insumo) =>
-    Object.values(insumo).some((value) =>
-      value?.toString().toLowerCase().includes(searchText.toLowerCase())
+    [
+      "marca",
+      "modelo",
+      "cantidad",
+      "proveedor",
+      "tipoDeTinta",
+      "colorDeTinta",
+    ].some((key) =>
+      insumo[key]?.toString().toLowerCase().includes(searchText.toLowerCase())
     )
   );
 
@@ -95,7 +103,7 @@ const Tabla = () => {
       sortable: true,
       grow: 0.5,
     },
-    { name: "Proveedor", selector: (row) => row.proveedor, grow: 1 },
+    { name: "Proveedor", selector: (row) => row.proveedor?.nombre || "N/A" },
     { name: "Tipo de tinta", selector: (row) => row.tipoDeTinta, grow: 1 },
     { name: "Color", selector: (row) => row.colorDeTinta, grow: 0.7 },
     {
@@ -161,21 +169,17 @@ const Tabla = () => {
         onChange={(e) => setSearchText(e.target.value)}
       />
 
-      {loading ? (
-        <ClipLoader size={30} />
-      ) : (
-        <div className="overflow-x-auto shadow-md rounded-lg">
-          <DataTable
-            customStyles={customStyles}
-            columns={columns}
-            highlightOnHover
-            data={filteredInsumos} // Usamos los datos filtrados
-            striped
-            pagination
-            responsive
-          />
-        </div>
-      )}
+      <div className="overflow-x-auto shadow-md rounded-lg">
+        <DataTable
+          customStyles={customStyles}
+          columns={columns}
+          highlightOnHover
+          data={filteredInsumos} // Usamos los datos filtrados
+          striped
+          pagination
+          responsive
+        />
+      </div>
 
       <Modal
         open={openEditModal}
