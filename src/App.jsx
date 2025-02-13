@@ -13,6 +13,7 @@ import CargarStock from "./container/CargarStock";
 import InsumosTabla from "./container/insumos/InsumosTabla";
 import CargarImpresoras from "./container/impresoras/CargarImpresoras";
 import ViewImpresora from "./components/verImpresoras/ViewImpresora";
+import CargarProveedor from "./container/proveedor/CargarProveedor";
 function App() {
   const router = createBrowserRouter(
     createRoutesFromElements(
@@ -30,6 +31,8 @@ function App() {
           {/* Ruta de impresoras */}
           <Route path="upimpresora" element={<CargarImpresoras />} />
           <Route path="verimpresoras" element={<ViewImpresora />} />
+          {/* Ruta de proveedores */}
+          <Route path="uproveedor" element={<CargarProveedor />} />
         </Route>
       </>
     )

@@ -103,7 +103,7 @@ function HomePage() {
                 flexDirection: "column",
               }}
             >
-              <IconButton>
+              <IconButton onClick={() => navigate("/admin/uproveedor")}>
                 <LocalShippingIcon
                   sx={{
                     justifyContent: "center",
