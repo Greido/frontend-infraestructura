@@ -12,6 +12,7 @@ import Person2Icon from "@mui/icons-material/Person2";
 import NavBar from "../components/global/NavBar";
 import DevicesIcon from "@mui/icons-material/Devices";
 import CategoryIcon from "@mui/icons-material/Category";
+import SendTimeExtensionIcon from "@mui/icons-material/SendTimeExtension";
 function HomePage() {
   const navigate = useNavigate();
   return (
@@ -236,6 +237,44 @@ function HomePage() {
           </Col>
         </Row>
         {/* ------------------------ */}
+        <Container>
+          <Row>
+            <Col>
+              <Paper
+                elevation={5}
+                sx={{
+                  mt: 5,
+                  height: 200,
+                  alignContent: "center",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  display: "flex",
+                  flexDirection: "column",
+                }}
+              >
+                <IconButton>
+                  <SendTimeExtensionIcon
+                    sx={{
+                      justifyContent: "center",
+                      fontWeight: 800,
+                      width: 100,
+                      height: 50,
+                    }}
+                  />
+                </IconButton>
+                <Typography
+                  sx={{
+                    textAlign: "center",
+                    flexDirection: "column",
+                    fontSize: 30,
+                  }}
+                >
+                  Entregar insumo
+                </Typography>
+              </Paper>
+            </Col>
+          </Row>
+        </Container>
       </Container>
     </>
   );
