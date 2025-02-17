@@ -34,17 +34,26 @@ const useInsumoModal = () => {
 
   const handleUpdate = async (updatedProduct) => {
     try {
+      console.log("Antes de enviar:", updatedProduct);
+
+      const updatedData = {
+        ...updatedProduct,
+        proveedor: updatedProduct.proveedor._id, // Asegurar que proveedor es solo el ID
+      };
+
+      console.log("Datos enviados al backend:", updatedData);
+
       const response = await axios.put(
         `https://stockback-nnq9.onrender.com/insumo/${updatedProduct._id}`,
-        updatedProduct
+        updatedData
       );
-      console.log("Producto actualizado:", response.data);
-      setInsumos(insumos);
-      handleCloseEditModal();
+
+      console.log("Respuesta del servidor:", response.data);
     } catch (error) {
-      console.error("Error al actualizar el producto:", error);
+      console.error("Error en la actualización:", error);
     }
   };
+
   return {
     openEditModal,
     selectedProduct,

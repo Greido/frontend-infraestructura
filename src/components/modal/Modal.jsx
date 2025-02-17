@@ -44,10 +44,10 @@ function Modal({ open, selectedProduct, handleClose, handleUpdate }) {
   }, [selectedProduct]);
 
   const handleChange = (e) => {
-    console.log("clg antes del del selected");
+    //console.log("clg antes del del selected");
     const { name, value } = e.target;
     setEditedProduct((prev) => ({ ...prev, [name]: value }));
-    console.log("clg desp del selected");
+    //console.log("clg desp del selected");
   };
 
   const handleSubmit = () => {
@@ -87,7 +87,7 @@ function Modal({ open, selectedProduct, handleClose, handleUpdate }) {
           margin="normal"
         />
         <TextField
-          label="Cantidad"
+          label="Modelo"
           name="modelo"
           value={editedProduct.modelo || ""}
           onChange={handleChange}
@@ -96,7 +96,7 @@ function Modal({ open, selectedProduct, handleClose, handleUpdate }) {
           type="text"
         />
         <TextField
-          label="Descripcion"
+          label="Cantidad"
           name="cantidad"
           value={editedProduct.cantidad || ""}
           onChange={handleChange}
