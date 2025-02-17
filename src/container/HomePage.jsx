@@ -252,7 +252,7 @@ function HomePage() {
                   flexDirection: "column",
                 }}
               >
-                <IconButton>
+                <IconButton onClick={() => navigate("/admin/entregaInsumos")}>
                   <SendTimeExtensionIcon
                     sx={{
                       justifyContent: "center",

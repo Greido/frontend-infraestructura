@@ -14,10 +14,12 @@ import {
 } from "@mui/material";
 import axios from "axios";
 import NavBar from "../../components/global/NavBar";
+import { useNavigate } from "react-router-dom";
 
 export default function EntregaInsumos() {
   const [insumos, setInsumos] = useState([]);
   const [areas, setAreas] = useState({}); // Estado para las áreas ingresadas
+  const [cantidades, setCantidades] = useState({}); // Estado para las cantidades ingresadas
 
   useEffect(() => {
     const fetchInsumos = async () => {
@@ -40,7 +42,18 @@ export default function EntregaInsumos() {
     }));
   };
 
-  const generarPDF = (insumo, area) => {
+  const handleCantidadChange = (id, event) => {
+    const value = event.target.value;
+    // Asegurar que la cantidad ingresada sea un número positivo
+    if (!isNaN(value) && value >= 0) {
+      setCantidades((prevCantidades) => ({
+        ...prevCantidades,
+        [id]: value,
+      }));
+    }
+  };
+
+  const generarPDF = (insumo, cantidad, area) => {
     const doc = new jsPDF();
     doc.setFontSize(12);
 
@@ -53,11 +66,11 @@ export default function EntregaInsumos() {
     // Usamos autoTable para crear la tabla
     doc.autoTable({
       startY: 60, // Empezamos la tabla a partir de la posición 60 en el eje Y
-      head: [["TIPO DE INSUMO", "CANTIDAD", "AREA"]],
+      head: [["TIPO DE INSUMO", "CANTIDAD", "ÁREA"]],
       body: [
         [
           `${insumo.marca} ${insumo.modelo}`,
-          "1 (uno)",
+          `${cantidad} unidad(es)`,
           area || "No especificado", // Mostramos el área ingresada
         ],
       ],
@@ -83,6 +96,11 @@ export default function EntregaInsumos() {
 
   const handleEntrega = async (id, cantidad, insumo) => {
     try {
+      if (cantidad <= 0 || cantidad > insumo.cantidad) {
+        alert("Cantidad inválida. Verifique el stock disponible.");
+        return;
+      }
+
       const area = areas[id] || ""; // Obtener el área ingresada para este insumo
 
       await axios.post(
@@ -97,15 +115,24 @@ export default function EntregaInsumos() {
             : item
         )
       );
-      generarPDF(insumo, area); // Pasamos el área al generar el PDF
+      generarPDF(insumo, cantidad, area); // Pasamos el área y la cantidad al generar el PDF
     } catch (error) {
       console.error("Error al entregar insumo:", error);
     }
   };
+  const navigate = useNavigate();
 
   return (
     <>
       <NavBar />
+      <Button
+        variant="contained"
+        color="primary"
+        onClick={() => navigate(-1)}
+        sx={{ mb: 2, mt: 5, ml: 5 }}
+      >
+        Volver
+      </Button>
       <TableContainer
         component={Paper}
         sx={{ maxWidth: 800, margin: "auto", mt: 3 }}
@@ -115,7 +142,8 @@ export default function EntregaInsumos() {
             <TableRow>
               <TableCell>Nombre</TableCell>
               <TableCell>Cantidad Disponible</TableCell>
-              <TableCell>Área</TableCell> {/* Nueva columna para el área */}
+              <TableCell>Área</TableCell>
+              <TableCell>Cantidad a Entregar</TableCell>
               <TableCell>Acción</TableCell>
             </TableRow>
           </TableHead>
@@ -137,13 +165,31 @@ export default function EntregaInsumos() {
                   />
                 </TableCell>
                 <TableCell>
+                  {/* Input para ingresar la cantidad */}
+                  <TextField
+                    value={cantidades[insumo._id] || ""}
+                    onChange={(e) => handleCantidadChange(insumo._id, e)}
+                    label="Cantidad"
+                    variant="outlined"
+                    size="small"
+                    type="number"
+                    inputProps={{ min: 1, max: insumo.cantidad }}
+                  />
+                </TableCell>
+                <TableCell>
                   <Button
                     variant="contained"
                     color="primary"
-                    onClick={() => handleEntrega(insumo._id, 1, insumo)}
+                    onClick={() =>
+                      handleEntrega(
+                        insumo._id,
+                        Number(cantidades[insumo._id]) || 1,
+                        insumo
+                      )
+                    }
                     disabled={insumo.cantidad <= 0}
                   >
-                    Entregar 1 unidad
+                    Entregar
                   </Button>
                 </TableCell>
               </TableRow>
