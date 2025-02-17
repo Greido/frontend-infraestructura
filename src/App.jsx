@@ -14,6 +14,7 @@ import InsumosTabla from "./container/insumos/InsumosTabla";
 import CargarImpresoras from "./container/impresoras/CargarImpresoras";
 import ViewImpresora from "./components/verImpresoras/ViewImpresora";
 import CargarProveedor from "./container/proveedor/CargarProveedor";
+import EntregaInsumos from "./container/entregaInsumos/EntregaInsumos";
 function App() {
   const router = createBrowserRouter(
     createRoutesFromElements(
@@ -28,6 +29,7 @@ function App() {
           {/* Rutas de stock */}
           <Route path="upinsumo" element={<CargarStock />} />
           <Route path="verinsumos" element={<InsumosTabla />} />
+          <Route path="entregaInsumos" element={<EntregaInsumos />} />
           {/* Ruta de impresoras */}
           <Route path="upimpresora" element={<CargarImpresoras />} />
           <Route path="verimpresoras" element={<ViewImpresora />} />
