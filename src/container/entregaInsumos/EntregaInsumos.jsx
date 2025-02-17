@@ -32,7 +32,7 @@ export default function EntregaInsumos() {
   const handleEntrega = async (id, cantidad) => {
     try {
       const response = await axios.post(
-        "http://localhost:4000/insumo/descontarInsumo",
+        "https://stockback-nnq9.onrender.com/insumo/descontarInsumo",
         { id, cantidad }
       );
       const url = window.URL.createObjectURL(new Blob([response.data]));
